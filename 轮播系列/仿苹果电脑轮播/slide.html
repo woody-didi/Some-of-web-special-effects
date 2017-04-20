@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>index</title>
+		<script type="text/javascript" src="js/jquery-3.1.0.min.js"></script>
+		<style>
+			* {
+				margin: 0;
+				padding: 0;
+			}
+			
+			body {
+				background: black;
+				overflow: hidden;
+			}
+			
+			.pic {
+				height: auto;
+				position: absolute;
+				bottom: 100px;
+			}
+			
+			.pic img {
+				width: 152px;
+				height: 97px;
+				position: absolute;
+				border: 2px dotted transparent;
+				transition: all .5s;
+				box-shadow:0 20px 50px -10px rgba(255,255,255,0.3);
+			}
+			
+			.pic .ac {
+				border-color: #FFFFFF;
+			}
+		</style>
+		<script>
+			$(function() {
+				
+				//获得大图的初始位置
+				var initLeft = $(document.body).width() / 2 - (639 / 2);
+				
+				var bigW=700, bigH=450, smallW=152, smallH=97, marW=20;
+				
+				//初始化
+				init();
+
+				$('img').eq(0).css({
+					'width': bigW + 'px',
+					'height': bigH + 'px'
+				});
+
+				var $img = $('img');
+
+				//初始化所有图片的left值
+				run();
+
+				//鼠标移入事件
+
+				$img.hover(function() {
+					$(this).addClass('ac').siblings().removeClass('ac');
+				}).on('click', function() {
+
+					var _this = $(this);
+
+					$(this).css({
+						'width': bigW+'px',
+						'height': bigH+'px',
+						'left': initLeft
+					}, 'fast').siblings().css({
+						'width': smallW+'px',
+						'height': smallH+'px'
+					}, 'fast')
+					$img.each(function(i) {
+						//设置图片的的left值
+						if(i < _this.index()) {
+							$img.eq(i).css({
+								'left': initLeft - ((_this.index() - i) * (smallW + marW))
+							})
+						} else if(i > _this.index()) {
+							$img.eq(i).css({
+								'left': initLeft + (bigW + marW) + ((i - _this.index() - 1) * (smallW + marW))
+							})
+						}
+					})
+				})
+
+				function init() {
+					var $pic = $('div.pic');
+					$pic.css('width', 12 * (smallW + marW));
+					for(var i = 0; i < 12; i++) {
+						var x = i * (smallW + marW);
+						$('<img src="images/' + (i + 1) + '.jpg" />')
+							.css({
+								'bottom': 50
+							})
+							.appendTo($pic);
+					}
+				}
+
+				function run() {
+					$('img').each(function(i) {
+						if(i - 1 >= 0) {
+							$('img').eq(i).css({
+								'left': $('img').eq(i - 1).offset().left + $('img').eq(i - 1).width() + marW
+							})
+						} else {
+							$('img').eq(i).css({
+								'left': initLeft
+							})
+						}
+					})
+				}
+
+			})
+		</script>
+	</head>
+
+	<body>
+		<div class="pic"></div>
+	</body>
+
+</html>
+<!--http://www.jq22.com/yanshi7021-->

@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>穿越时空</title>
+    <script src="js/jquery-3.1.0.js"></script>
+    <style>
+        *{margin: 0;padding: 0}
+        body{overflow: hidden;}
+        .box{position: absolute;width: 980px;height: 500px;top:0;right: 0;bottom: 0;left: 0;margin: auto;perspective: 200px;transform-style: preserve-3d;}
+        .item{position: absolute;}
+        .prev,.next{position: absolute;width: 47px;height: 39px;z-index: 999;top:50%;transform: translateY(-50%);cursor: pointer;font-size: 10px;text-align: center;line-height: 39px;color: #333;}
+        .prev{left: -100px;background-image: url("images/icon02.jpg")}
+        .next{right: -100px;background-image: url("images/icon01.jpg")}
+    </style>
+    <script>
+        $(function () {
+
+
+            var lie = 32;
+
+            $('<div class="box"><div class="prev">上一张</div><div class="next">下一张</div></div>').appendTo('body');
+            var $box = $('.box');
+            var row = 20;//行
+            var col = lie;//列
+            var r = lie;
+            var pic = 0;//图片
+            var itemWidth = $box.width()/col;
+            var itemHeight = $box.height()/row;
+            init();
+
+
+            $('.next').on('click',function(){
+                $('.next,.prev').slideUp();
+                if(pic>=24){
+                    fly();
+                    setTimeout(function(){pic=-1;pic++;},3000);
+                    setTimeout(togater,3000);
+                }else {
+                    fly();
+                    setTimeout(function(){pic++;},3000);
+                    setTimeout(togater,3000);
+                }
+                setTimeout(function(){$('.next,.prev').slideDown()},5000);
+            });
+
+
+            $('.prev').on('click',function(){
+                $('.next,.prev').slideUp();
+                if(pic<=0){
+                    fly();
+                    setTimeout(function(){pic=25;pic--;},3000);
+                    setTimeout(togater,3000);
+                }else {
+                    fly();
+                    setTimeout(function(){pic--;},3000);
+                    setTimeout(togater,3000);
+                }
+                setTimeout(function(){$('.next,.prev').slideDown()},5000);
+            });
+
+            function init() {
+                for(var x = 0;x < col;x++ ){
+                    for(var y = 0;y < row;y++){
+                        $('<div class="item"></div>').addClass('col'+(x+1)).addClass('row'+(y+1)).css({
+                            'width':itemWidth + 'px',
+                            'height':itemHeight + 'px',
+                            'left':x*itemWidth + 'px',
+                            'top':y*itemHeight + 'px',
+                            'background-image':'url("images/'+pic+'.jpg")',
+                            'background-position':(-x*itemWidth)+'px '+(-y*itemHeight)+'px'
+                        }).appendTo($box)
+                    }
+                }
+            }
+
+
+            function fly() {
+                var timer = null;
+                timer = setInterval(function () {
+                    $('.col'+col).each(function () {
+                        var rx = Random(600,600);
+                        var ry = Random(-500,500);
+                        var durationT = Random(1,2);
+                        var durationO = Random(2,3);
+                        var delay = Random(0,0.5);
+                        $(this).css({
+                            'transition':'transform '+durationT+'s '+delay+'s,opacity '+durationO+'s '+delay+'s, rotateX '+durationT+'s '+delay+'s',
+                            'transform':'translate(0px,0px) translateZ('+ry+'px) rotateY('+ry+'deg) rotateX('+ry+'deg) rotateZ('+ry+'deg)',
+                            'box-shadow':'0px 0px 10px rgba(0,0,0,.5) ',
+                            'background-image':'url("images/'+pic+'.jpg")',
+                            'opacity':'0'
+                        });
+                    });
+                    col--;
+                    if(col < 0) {clearInterval(timer);timer = null}
+                },20);
+                col = lie;
+            }
+
+
+
+            function togater(){;
+                var timer = null;
+
+                timer = setInterval(function () {
+                    $('.col'+r).each(function () {
+                        var durationT = Random(1,2);
+                        var durationO = Random(2,3);
+                        var delay = Random(0,0.5);
+                        $(this).css({
+                            'transition':'transform '+durationT+'s '+delay+'s,opacity '+durationO+'s '+delay+'s, rotateX '+durationT+'s '+delay+'s',
+                            'background-image':'url("images/'+(pic)+'.jpg")',
+                            'transform':'translate(0px,0px) translateZ(0px) rotateY(0deg) rotateX(0deg) rotateZ(0deg)',
+                            'box-shadow':'',
+                            'opacity':'1'
+                        });
+
+                    });
+                    r--;
+                    if(r < 0) {clearInterval(timer);timer = null}
+                },20);
+                r = lie
+            }
+
+
+
+            function Random(start,end){
+                return Math.random()*(end-start)+start;
+            }
+
+
+        })
+
+
+    </script>
+</head>
+<body>
+
+</body>
+</html>

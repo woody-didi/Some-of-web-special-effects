@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style>
+		    .menu div{
+		        width: 150px;
+		        height: 25px;
+		        font: 12px/25px "微软雅黑";
+		        background: coral;
+		        /*border: 1px solid #ccc;*/
+		        text-align: center;
+		        
+		        transform-style: preserve-3d;
+                perspective: 600px;
+		        transform: rotateX(180deg);
+                transform-origin: top;
+		    }
+            .menu {
+                transform-style: preserve-3d;
+                perspective: 600px;
+                width: 166px;
+                margin: 0 auto;
+            }
+            .expand {
+                transform: rotateX(0deg) !important;
+                transition: transform 1s ease;
+            }
+            
+            .wind {
+                animation: wind 8s ease 1s infinite;
+            }
+            @keyframes wind{
+            	0%{transform: rotateX(-2deg);}
+            	50%{transform: rotateX(2deg);}
+            	100%{transform: rotateX(-2deg);}
+            }
+            
+		</style>
+		<script type="text/javascript" src="js/jquery-3.1.0.min.js" ></script>
+		<script>
+		    $(function(){
+		        var items = $(".menu div");
+		        function expand(index) {
+		            items.eq(index).addClass("expand").addClass("wind");
+		            if (index + 1 < items.length)
+		                setTimeout(expand, 300, index + 1);
+//		            else
+//		              items.addClass("wind");
+		        }
+
+		        setTimeout(expand, 0, 0);
+		        
+		    })
+		</script>
+	</head>
+	<body>
+	    <div class="menu">
+    	    <h2>折纸菜单</h2>
+    	    <div>
+    	        <span>菜单项1</span>
+        	    <div>
+        	        <span>菜单项2</span>
+            	    <div>
+            	        <span>菜单项3</span>
+            	        <div>
+                	        <span>菜单项4</span>
+                            <div>
+                                <span>菜单项5</span>
+                                <div>
+                                    <span>菜单项6</span>
+                                    <div>
+                                        <span>菜单项7</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+            	    </div>
+            	</div>
+    	    </div>
+	    </div>
+	</body>
+</html>

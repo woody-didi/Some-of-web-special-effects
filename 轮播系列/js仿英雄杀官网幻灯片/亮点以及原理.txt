@@ -1,0 +1,47 @@
+1、该jQuery旋转木马插件需要引入jQuery，jquery.carousel.js文件。
+
+<script src="js/jquery.min.js"></script>
+
+<script src="js/jquery.carousel.js"></script>
+
+2、该jQuery旋转木马插件使用一个<div>来作为包裹元素，在它里面是一个无序列表，用于放置图片，以及两个作为前后导航按钮的<div>元素。
+
+<div class="caroursel rotator-demo">
+  <ul class="rotator-list">
+    <li class="rotator-item"><img src="image/1.jpg"></li>
+    <li class="rotator-item"><img src="image/2.jpg"></li>
+    <li class="rotator-item"><img src="image/3.jpg"></li>
+  </ul>
+  <div class="rotator-btn rotator-prev-btn"></div>
+  <div class="rotator-btn rotator-next-btn"></div>
+</div>
+图片的数量需要为奇数张，否则显示会有一些异常，这是该插件的一个小bug。
+
+3、你需要为该旋转木马特效添加下面的一些必要的CSS样式。
+.rotator-main {position: relative;width: 900px;height: 400px}
+
+.rotator-main a, .rotator-main img { display: block; }
+
+.rotator-main .rotator-list {width: 900px;height: 400px}
+
+.rotator-main .rotator-list .rotator-item { position: absolute;left: 0px;top: 0px}
+
+.rotator-main .rotator-btn {position: absolute; height: 100%;width: 100px;top: 0px;z-index: 10;opacity: 0;}
+
+.rotator-main .rotator-prev-btn { left: 0px;background: url("../image/btn_l.png") no-repeat center center; background-color: red}
+
+.rotator-main .rotator-next-btn {right: 0px; background: url("../image/btn_r.png") no-repeat center center; background-color: red}
+
+
+4、在页面DOM元素加载完毕之后，可以通过下面的方法来初始化该旋转木马插件。
+
+Caroursel.init($('.caroursel'))
+
+5、如果你需要自定义一些参数，可以在顶层<div>元素中设置data-setting属性。
+
+
+6、jQuery自动轮播旋转木马插件案例完整代码如下：
+
+
+7、jQuery自动轮播旋转木马插件案例，
+

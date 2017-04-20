@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>消失吧</title>
+    <script src="js/jquery-3.1.0.js"></script>
+    <style>
+        *{margin: 0;padding: 0}
+        body{overflow: hidden;}
+        .box{position: absolute;width: 980px;height: 500px;top:0;right: 0;bottom: 0;left: 0;margin: auto;perspective: 200px;transform-style: preserve-3d;}
+        .item{position: absolute;}
+        .btn{position: absolute;border: none;z-index: 999;left: 50%;transform: translateX(-50%);top:-100px;height: 50px;line-height: 50px;font-size: 16px;padding: 0 20px;box-shadow: 0 0 5px rgba(0,0,0,.5);cursor: pointer;color: #c81623;font-weight: 600;font-family: "Microsoft YaHei", sans-serif;outline: none;}
+    </style>
+    <script>
+        $(function () {
+            $('<div class="box"><button class="btn">点击消失</button></div>').appendTo('body');
+            var $box = $('.box');
+            var row = 35;//行
+            var col = 56;//列
+            var itemWidth = $box.width()/col;
+            var itemHeight = $box.height()/row;
+            init();
+            $('.btn').click(fly);
+
+            function init() {
+                for(var x = 0;x < col;x++ ){
+                    for(var y = 0;y < row;y++){
+                        $('<div class="item"></div>').addClass('col'+(x+1)).addClass('row'+(y+1)).css({
+                            'width':itemWidth + 'px',
+                            'height':itemHeight + 'px',
+                            'left':x*itemWidth + 'px',
+                            'top':y*itemHeight + 'px',
+                            'background-image':'url("images/11.jpg")',
+                            'background-position':(-x*itemWidth)+'px '+(-y*itemHeight)+'px'
+                        }).appendTo($box)
+                    }
+                }
+            }
+
+
+            function fly() {
+                var timer = null;
+                timer = setInterval(function () {
+                    $('.col'+col).each(function () {
+                        var rx = Random(600,600);
+                        var ry = Random(-500,500);
+                        var durationT = Random(3,4);
+                        var durationO = Random(2,3);
+                        var delay = Random(0,0.5);
+                        $(this).css({
+                            'transition':'transform '+durationT+'s '+delay+'s,opacity '+durationO+'s '+delay+'s, rotateX '+durationT+'s '+delay+'s',
+                            'transform':'translate('+rx+'px,'+-ry+'px) translateZ('+ry+'px) rotateY('+ry+'deg) rotateX('+ry+'deg) rotateZ('+ry+'deg)',
+                            'box-shadow':'0px 0px 10px rgba(0,0,0,.5) ',
+                            'opacity':'0'
+                        })
+
+                    });
+                    col--;
+                    if(col < 0) {clearInterval(timer);timer = null}
+                },30);
+            }
+            function Random(start,end){
+                return Math.random()*(end-start)+start;
+            }
+
+        })
+
+
+    </script>
+</head>
+<body>
+
+</body>
+</html>

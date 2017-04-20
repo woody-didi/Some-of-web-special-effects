@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>你画我猜</title>
+
+    <style>
+
+        html,body,div,canvas,nav,input,ul,li{
+            margin: 0;
+            padding: 0;
+        }
+
+        #box{
+
+            width: 600px;
+            height: 500px;
+            margin: 100px auto;
+            background-color: orange;
+        }
+
+        #box nav{
+            width: 100%;
+            height: 100px;
+        }
+
+        #box nav div{
+
+            height: 50px;
+            line-height: 50px;
+        }
+
+        #box nav .changeColor{
+
+            padding-left: 15px;
+        }
+
+        .changeColor input{
+
+            width: 30px;
+            height: 30px;
+            margin: 0 15px;
+            vertical-align: middle;
+        }
+
+        .clear input:first-of-type{
+            margin-left: 15px;
+            width: 100px;
+            height: 30px;
+            background-color: #ffffff;
+        }
+
+        .clear input:last-of-type{
+            margin-left: 15px;
+            width: 30px;
+            height: 30px;
+            background-color: #ffffff;
+        }
+
+        canvas{
+
+            background-color: yellow;
+
+        }
+    </style>
+
+</head>
+<body>
+
+<div id="box">
+
+    <nav>
+        <div class="changeColor">
+            请选择颜色
+            <input type="button" style="background-color: pink">
+            <input type="button" style="background-color: purple">
+            <input type="button" style="background-color: red">
+            <input type="button" style="background-color: green">
+            <input type="button" style="background-color: deepskyblue">
+        </div>
+        <div class="clear">
+            <input type="button" value="清空画布" onclick = clearLayer()>
+            橡皮擦<input class="eraser" type="button" >
+        </div>
+    </nav>
+    <canvas width="600" height="400">
+
+    </canvas>
+
+</div>
+
+
+<script>
+
+    var cvs = document.querySelector("canvas");
+
+    var ctx = cvs.getContext("2d");
+
+    var eraser = document.querySelector(".eraser");
+    console.log(eraser);
+
+    cvs.addEventListener("mousedown",function (e) {
+        var x = e.offsetX;
+        var y = e.offsetY;
+
+
+        cvs.oldPoint = {
+            x: x - 1,
+            y: y - 1,
+        }
+
+
+        drawLine(x,y);
+
+        this.addEventListener("mousemove",move);
+        this.addEventListener("mouseup",up);
+
+    })
+
+    function move(e) {
+        var x = e.clientX - this.offsetLeft;
+        var y = e.clientY - this.offsetTop;
+        drawLine(x,y);
+        cvs.oldPoint = {
+            x: x,
+            y: y,
+        }
+
+    }
+
+    function up(e) {
+
+
+        this.removeEventListener("mousemove",move);
+        this.removeEventListener("mouseup",up);
+    }
+
+    function drawLine(x,y) {
+
+        ctx.beginPath();
+        ctx.lineWidth = 5;
+        ctx.lineJoin = "round";
+        ctx.lineCap = "round";
+        ctx.moveTo(cvs.oldPoint.x,cvs.oldPoint.y);
+
+        ctx.lineTo(x,y);
+
+        ctx.stroke();
+
+        ctx.closePath();
+
+
+    }
+
+    function clearLayer() {
+        ctx.clearRect(0,0,cvs.width,cvs.height);
+    }
+
+    var colorBtn = document.querySelectorAll(".changeColor input");
+
+    var colorBtnArr = [].slice.call(colorBtn);
+
+    colorBtnArr.forEach(function (item,index) {
+
+        item.onclick = function () {
+
+            changeColor(this);
+        }
+
+    });
+
+    function changeColor(btn) {
+
+        ctx.strokeStyle = getComputedStyle(btn).backgroundColor;
+
+
+    }
+
+    eraser.onclick = function () {
+        ctx.strokeStyle = getComputedStyle(cvs).backgroundColor;
+    };
+</script>
+
+
+</body>
+</html>
